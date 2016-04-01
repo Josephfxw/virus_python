@@ -1,5 +1,5 @@
 # virus_python
-[Read more words!](virus_python/virus.gif)
+![alt tag](virus_python/virus.gif)
 This program can wreak havoc and steal information.
  
 How to use it?
