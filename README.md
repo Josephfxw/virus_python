@@ -1,6 +1,6 @@
 # virus_python
 ![alt tag](/virus.gif)
-This program can wreak havoc and steal information.
+This program can wreak havoc and steal information. I only provide the main source code for how the stealing works, not the entire code for the standalone version of this program. Since it is dangeous for posting it online. 
  
 How to use it?
 
@@ -9,8 +9,6 @@ How to use it?
 3. run the command python virus.py in that directory
 4. this virus program will change all the file extention to .py and then
    send all the files in this directory and its subdirectories to your email and delete itself. 
-5. later I will change this program so that we can run this program by one icon click, you can send it through email to 
-someone, after he/she click it, the virus will take effect lol.
-6. Please don't use it to hack someone, it is used for test purpose only.
+5. Please don't use it to hack someone, it is used for study only.
 
 
