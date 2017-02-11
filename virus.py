@@ -103,7 +103,7 @@ def main():
     server.ehlo()
     server.starttls()
     server.ehlo()
-    server.login('hackerfxw@outlook.com', 'xueweifan123')
+    server.login('hacker@outlook.com', 'xueweifan')
     # send mail
     server.sendmail(sender_addr, recipient_addr, messages)
     server.quit()
