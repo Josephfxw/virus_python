@@ -1,5 +1,5 @@
 # virus_python
-![alt tag](/virus.gif)
+This is part of the code from the virus program (the GUI part of the code is not here)
 This program can wreak havoc and steal information. I only provide the main source code for how the stealing works, not the entire code for the standalone version of this program. Since it is dangeous for posting it online. 
  
 How to use it?
