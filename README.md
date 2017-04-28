@@ -1,6 +1,6 @@
 # virus_python
-This is part of the code from the virus program (the GUI part of the code is not here).<br>
-This program can wreak havoc and steal information. I only provide the main source code for how the stealing works, not the entire code for the standalone version of this program. Since it is dangeous for posting it online. 
+
+This program wreaks havoc and steals information when user try to open it. I only provide the main source code for how the stealing works, not the entire code (the GUI) for the standalone version of this program. Since it is dangeous for posting it online. 
  
 How to use it?
 
